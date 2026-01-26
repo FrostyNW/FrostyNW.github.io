@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>FrostyNW | Minecraft Sunucusu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:#fff;
+  text-align:center;
+}
+.container{max-width:800px;margin:auto;padding:40px 20px}
+.card{
+  background:rgba(0,0,0,.55);
+  border-radius:16px;
+  padding:30px;
+  box-shadow:0 0 25px rgba(0,0,0,.6)
+}
+h1{font-size:3em;margin-bottom:10px}
+.ip-box{
+  background:#111;border:2px solid #00d9ff;border-radius:10px;
+  padding:15px;font-size:1.2em;margin:20px 0;cursor:pointer
+}
+.ip-box:hover{background:#00d9ff;color:#000}
+.stats{
+  display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:15px
+}
+.stat{
+  background:#00d9ff;color:#000;padding:10px 16px;
+  border-radius:20px;font-weight:bold;min-width:140px
+}
+.footer{margin-top:30px;font-size:.9em;opacity:.7}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <div class="card">
+    <h1>❄️ FrostyNW ❄️</h1>
+    <p>Türkiye'nin en serin Minecraft sunucusu</p>
+
+    <div class="ip-box" onclick="copyIP()">
+      IP: <b>FrostyNW.aternos.me</b><br>
+      <small>(Tıkla kopyala)</small>
+    </div>
+
+    <div class="stats">
+      <div class="stat" id="status">Durum: Yükleniyor…</div>
+      <div class="stat" id="players">Oyuncu: ? / ?</div>
+      <div class="stat">1.8 – 1.21</div>
+      <div class="stat">Survival / SMP</div>
+    </div>
+
+    <p style="margin-top:20px">
+      Dostça ortam, aktif yetkili, eğlence full.<br>
+      FrostyNW seni bekliyor!
+    </p>
+  </div>
+
+  <div class="footer">© 2026 FrostyNW</div>
+</div>
+
+<script>
+function copyIP(){
+  navigator.clipboard.writeText("FrostyNW.aternos.me");
+  alert("IP kopyalandı!");
+}
+
+// Canlı oyuncu sayısı
+async function loadStatus(){
+  try{
+    const res = await fetch("https://api.mcsrvstat.us/2/FrostyNW.aternos.me");
+    const data = await res.json();
+
+    if(data.online){
+      document.getElementById("status").innerText = "Durum: Online";
+      document.getElementById("players").innerText =
+        `Oyuncu: ${data.players.online} / ${data.players.max}`;
+    }else{
+      document.getElementById("status").innerText = "Durum: Offline";
+      document.getElementById("players").innerText = "Oyuncu: 0 / 0";
+    }
+  }catch(e){
+    document.getElementById("status").innerText = "Durum: Hata";
+  }
+}
+
+loadStatus();
+setInterval(loadStatus, 10000); // 10 sn'de bir yeniler
+</script>
+</body>
+</html>
